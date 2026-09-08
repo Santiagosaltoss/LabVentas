@@ -25,7 +25,7 @@ def obtener_producto_por_id(producto_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="El producto no fue encontrado")
     return db_producto
 
-@app.put('/productos/{producto_id}', response_model= schemas.ProductoUpdate)
+@app.put('/productos/{producto_id}', response_model= schemas.ProductoResponse)
 def modificar_producto(producto_id: int, producto_data: schemas.ProductoCreate, db: Session = Depends(get_db)):
     db_producto = crud.actualizar_producto(db=db, producto_id=producto_id, producto_data=producto_data)
     if db_producto is None: 

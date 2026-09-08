@@ -10,7 +10,6 @@ class ProductoCreate(ProductoBase): #Esquema de alta de productos (cliente)
     pass #Hereda todos los campos de ProductoBase
 
 class ProductoUpdate(BaseModel): #Modificacion, todos opcionales
-    id: optional[int] = None
     nombre: optional[str] = None
     precio: optional[float] = None
 
@@ -18,4 +17,5 @@ class ProductoResponse(ProductoBase): #Api response
     id: int 
 
 class Config:
-    from_atributes = True #Pydantic lee SQL
+    from_atributes = True
+    orm_mode = True #Pydantic lee SQL 

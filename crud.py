@@ -30,9 +30,8 @@ def actualizar_producto(db: Session, producto_id: int, producto_data: schemas.Pr
     
     # Sobreescribe todos los atributos con los nuevos valores recibidos
     db_producto.nombre = producto_data.nombre
-    db_producto.descripcion = producto_data.descripcion
     db_producto.precio = producto_data.precio
-    db_producto.en_stock = producto_data.en_stock
+    db_producto.id = producto_data.id 
         
     db.commit()
     db.refresh(db_producto)
