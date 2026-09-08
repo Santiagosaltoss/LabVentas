@@ -1,0 +1,17 @@
+# Entornos virtuales (evita subir megabytes innecesarios)
+venv/
+.venv/
+env/
+
+# Archivos de caché de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configuración de tu editor (opcional)
+.vscode/
+.idea/
+
+# Variables de entorno con claves secretas o passwords
+.env 
