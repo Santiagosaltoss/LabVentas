@@ -12,9 +12,26 @@ class ProductoCreate(ProductoBase): #Esquema de alta de productos (cliente)
 class ProductoUpdate(BaseModel): #Modificacion, todos opcionales
     nombre: optional[str] = None
     precio: optional[float] = None
+    id: optional[int] = None 
 
 class ProductoResponse(ProductoBase): #Api response
     id: int 
+
+class VentaBase(BaseModel): 
+    id: int
+    fecha: date  
+    hora: time
+    id_producto: int 
+    cantidad: int
+    precio_total: float 
+
+class VentaCreate(VentaBase):
+    pass
+
+class VentaUpdate(BaseModel): 
+
+
+
 
 class Config:
     from_atributes = True
