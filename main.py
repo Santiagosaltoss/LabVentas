@@ -99,7 +99,7 @@ def obtener_venta(
 
 
 # 4. MODIFICACIÓN PARCIAL (Actualizar datos de una venta)
-@app.patch(
+@app.put(
     "/ventas/{venta_id}", 
     response_model=schemas.VentaResponse,
     tags=["Ventas"]
