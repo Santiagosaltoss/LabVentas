@@ -38,3 +38,104 @@ def eliminar_producto(producto_id: int, db: Session = Depends(get_db)):
     if not exito:
         raise HTTPException(status_code=404, detail="El producto no fue encontrado para eliminar")
     return {"mensaje": f"El producto con ID {producto_id} ha sido eliminado correctamente"}
+
+# ------------------------------------------------------------------
+# ENDPOINTS PARA VENTAS
+# ------------------------------------------------------------------
+
+# 1. ALTA (Crear Venta)
+@app.post(
+    "/ventas/", 
+    response_model=schemas.VentaResponse, 
+    status_code=status.HTTP_201_CREATED,
+    tags=["Ventas"]
+)
+def crear_venta(
+    venta: schemas.VentaCreate, 
+    db: Session = Depends(get_db)
+):
+    # Opcional: Validar que el producto exista antes de procesar la venta
+    db_producto = crud.obtener_producto(db, producto_id=venta.id_producto)
+    if not db_producto:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="El producto asociado a la venta no existe"
+        )
+    
+    return crud.crear_venta(db=db, venta=venta)
+
+
+# 2. CONSULTA GENERAL (Obtener listado de ventas)
+@app.get(
+    "/ventas/", 
+    response_model=List[schemas.VentaResponse],
+    tags=["Ventas"]
+)
+def listar_ventas(
+    skip: int = 0, 
+    limit: int = 100, 
+    db: Session = Depends(get_db)
+):
+    return crud.obtener_ventas(db=db, skip=skip, limit=limit)
+
+
+# 3. CONSULTA POR ID (Obtener una venta específica)
+@app.get(
+    "/ventas/{venta_id}", 
+    response_model=schemas.VentaResponse,
+    tags=["Ventas"]
+)
+def obtener_venta(
+    venta_id: int, 
+    db: Session = Depends(get_db)
+):
+    db_venta = crud.obtener_venta(db=db, venta_id=venta_id)
+    if db_venta is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="La venta solicitada no existe"
+        )
+    return db_venta
+
+
+# 4. MODIFICACIÓN PARCIAL (Actualizar datos de una venta)
+@app.patch(
+    "/ventas/{venta_id}", 
+    response_model=schemas.VentaResponse,
+    tags=["Ventas"]
+)
+def actualizar_venta(
+    venta_id: int, 
+    venta_update: schemas.VentaUpdate, 
+    db: Session = Depends(get_db)
+):
+    db_venta = crud.actualizar_venta_parcial(
+        db=db, 
+        venta_id=venta_id, 
+        venta_data=venta_update
+    )
+    if db_venta is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="No se encontró la venta para actualizar"
+        )
+    return db_venta
+
+
+# 5. BAJA (Eliminar Venta)
+@app.delete(
+    "/ventas/{venta_id}", 
+    status_code=status.HTTP_204_NO_CONTENT,
+    tags=["Ventas"]
+)
+def eliminar_venta(
+    venta_id: int, 
+    db: Session = Depends(get_db)
+):
+    exito = crud.eliminar_venta(db=db, venta_id=venta_id)
+    if not exito:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail="La venta que intentas eliminar no existe"
+        )
+    return None

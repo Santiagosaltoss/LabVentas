@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Boolean, Date, Time, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, Boolean, DateTime, ForeignKey
 from database import Base 
 from sqlalchemy.sql import func
 
@@ -13,9 +13,8 @@ class Ventas(Base):
     __tablename__ = 'ventas'
 
     id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
-    fecha = Column(Date, default=func.current_date())
-    hora = Column(Time, nullable=False)
     id_producto = Column(Integer, ForeignKey('productos.id'), nullable=False)
     cantidad = Column(Integer, nullable=False)
     precio_total = Column(Float, nullable=False)
+    fecha = Column(DateTime(timezone=True), server_default=func.now())
 

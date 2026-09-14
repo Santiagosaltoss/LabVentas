@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional 
+from datetime import datetime
 
 class ProductoBase(BaseModel): #Base comun para todos los campos
     nombre: str
@@ -17,19 +18,27 @@ class ProductoUpdate(BaseModel): #Modificacion, todos opcionales
 class ProductoResponse(ProductoBase): #Api response
     id: int 
 
-class VentaBase(BaseModel): 
-    id: int
-    fecha: date  
-    hora: time
-    id_producto: int 
+class VentaBase(BaseModel):
+    id_producto: int
     cantidad: int
-    precio_total: float 
+    precio_total: float
+
 
 class VentaCreate(VentaBase):
-    pass
+    pass 
 
-class VentaUpdate(BaseModel): 
+# 3. Esquema para Actualizar 
+class VentaUpdate(BaseModel):
+    id_producto: Optional[int] = None
+    cantidad: Optional[int] = None
+    precio_total: Optional[float] = None
 
+# 4. (Lo que la API DEVUELVE al cliente)
+class VentaResponse(VentaBase):
+    id: int              
+    fecha: datetime       
+
+    model_config = {"from_attributes": True}
 
 
 
