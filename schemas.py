@@ -4,7 +4,6 @@ from datetime import datetime
 
 class ProductoBase(BaseModel): #Base comun para todos los campos
     nombre: str
-    id: int 
     precio: float 
 
 class ProductoCreate(ProductoBase): #Esquema de alta de productos (cliente)
@@ -13,7 +12,6 @@ class ProductoCreate(ProductoBase): #Esquema de alta de productos (cliente)
 class ProductoUpdate(BaseModel): #Modificacion, todos opcionales
     nombre: optional[str] = None
     precio: optional[float] = None
-    id: optional[int] = None 
 
 class ProductoResponse(ProductoBase): #Api response
     id: int 
@@ -21,7 +19,7 @@ class ProductoResponse(ProductoBase): #Api response
 class VentaBase(BaseModel):
     id_producto: int
     cantidad: int
-    precio_total: float
+    
 
 
 class VentaCreate(VentaBase):
@@ -35,7 +33,8 @@ class VentaUpdate(BaseModel):
 
 # 4. (Lo que la API DEVUELVE al cliente)
 class VentaResponse(VentaBase):
-    id: int              
+    id: int
+    precio_total: float              
     fecha: datetime       
 
     model_config = {"from_attributes": True}
